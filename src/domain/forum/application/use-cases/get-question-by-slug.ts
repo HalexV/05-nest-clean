@@ -20,7 +20,7 @@ export class GetQuestionBySlugUseCase {
   async execute({
     slug,
   }: GetQuestionBySlugUseCaseRequest): Promise<GetQuestionBySlugUseCaseResponse> {
-    const question = await this.questionsRepository.findByslug(slug)
+    const question = await this.questionsRepository.findBySlug(slug)
 
     if (!question) {
       return left(new ResourceNotFoundError())
