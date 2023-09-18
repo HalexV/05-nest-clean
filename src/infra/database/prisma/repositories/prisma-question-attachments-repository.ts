@@ -1,5 +1,7 @@
 import { QuestionAttachment } from '@/domain/forum/enterprise/entities/question-attachment'
 import { Injectable } from '@nestjs/common'
+import { PrismaService } from '../prisma.service'
+import { PrismaQuestionAttachmentMapper } from '../mappers/prisma-question-attachment-mapper'
 
 export interface QuestionAttachmentsRepository {
   findManyByQuestionId(questionId: string): Promise<QuestionAttachment[]>
@@ -10,11 +12,25 @@ export interface QuestionAttachmentsRepository {
 export class PrismaQuestionAttachmentsRepository
   implements QuestionAttachmentsRepository
 {
-  findManyByQuestionId(questionId: string): Promise<QuestionAttachment[]> {
-    throw new Error('Method not implemented.')
+  constructor(private prisma: PrismaService) {}
+
+  async findManyByQuestionId(
+    questionId: string,
+  ): Promise<QuestionAttachment[]> {
+    const questionAttachments = await this.prisma.attachment.findMany({
+      where: {
+        questionId,
+      },
+    })
+
+    return questionAttachments.map(PrismaQuestionAttachmentMapper.toDomain)
   }
 
-  deleteManyByQuestionId(questionId: string): Promise<void> {
-    throw new Error('Method not implemented.')
+  async deleteManyByQuestionId(questionId: string): Promise<void> {
+    await this.prisma.attachment.deleteMany({
+      where: {
+        questionId,
+      },
+    })
   }
 }
