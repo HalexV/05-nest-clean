@@ -90,7 +90,7 @@ describe('Edit Question', () => {
     expect(result.value).toBeInstanceOf(NotAllowedError)
   })
 
-  it('should sync new and removed attachments editing a question', async () => {
+  it('should sync new and removed attachments when editing a question', async () => {
     const newQuestion = makeQuestion(
       {
         authorId: new UniqueEntityId('author-1'),
