@@ -2,17 +2,25 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { AnswerQuestionUseCase } from './answer-question'
 import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
 import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments-repository'
+import { InMemoryAttachmentsRepository } from 'test/repositories/in-memory-attachments-repository'
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
 
 let inMemoryAnswersRepository: InMemoryAnswersRepository
 let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
+let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository
+let inMemoryStudentsRepository: InMemoryStudentsRepository
 let sut: AnswerQuestionUseCase
 
 describe('Create Answer', () => {
   beforeEach(() => {
+    inMemoryAttachmentsRepository = new InMemoryAttachmentsRepository()
+    inMemoryStudentsRepository = new InMemoryStudentsRepository()
     inMemoryAnswerAttachmentsRepository =
       new InMemoryAnswerAttachmentsRepository()
     inMemoryAnswersRepository = new InMemoryAnswersRepository(
       inMemoryAnswerAttachmentsRepository,
+      inMemoryAttachmentsRepository,
+      inMemoryStudentsRepository,
     )
     sut = new AnswerQuestionUseCase(inMemoryAnswersRepository)
   })
